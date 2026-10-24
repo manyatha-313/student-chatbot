@@ -126,7 +126,7 @@ button{font:inherit;color:inherit;cursor:pointer}
       <div class="feed" id="feed" aria-live="polite"></div>
       <div class="ask"><textarea id="q2" placeholder="Ask a follow-up…" aria-label="Follow-up question"></textarea><button class="send" data-send="q2">Ask</button></div>
     </div>
-    <div class="demo">Demo answers only. The backend isn’t connected yet.</div>
+    <div class="demo">Answers come only from the official college documents, with page citations.</div>
   </div>
 </section>
 
@@ -156,13 +156,16 @@ $("#theme").onclick=()=>{const d=document.documentElement;d.dataset.theme=d.data
 document.addEventListener("click",e=>{const id=e.target.dataset.send;if(id){ask($("#"+id).value);$("#"+id).value=""}});
 document.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey&&e.target.tagName==="TEXTAREA"){e.preventDefault();ask(e.target.value);e.target.value=""}});
 
-// Swap this for a real call, e.g. fetch("/api/ask",{method:"POST",body:JSON.stringify({q,program})})
+// Real call to the Python backend (serve.py). Returns the shape ask() expects.
 async function askBackend(q,program,course){
-  await sleep(1500);
-  const hit=Object.values(KB).find(k=>k.keys.test(q));
-  if(hit)return {type:"answer",title:hit.title,items:[{p:program,...hit.by["B.E."]}]};
-  const k=/hostel|warden|mess/i.test(q)?"hostel":/re-?eval|revaluation/i.test(q)?"exam":"def";
-  return {type:"none",contact:CONTACT[k]};
+  const r=await fetch("/ask",{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({question:q})});
+  if(!r.ok)return {type:"none",contact:CONTACT.def};
+  const d=await r.json();
+  if(!d.answered)return {type:"none",contact:d.contact||CONTACT.def};
+  const t=d.answer.replace(/p\.?\s*(\d+)/gi,"{{$1}}");  // turn "p. 21" into a clickable citation
+  const s=d.sources.map(c=>[c.page,(c.doc||"")+(c.section?" — "+c.section:""),c.text]);
+  return {type:"answer",title:"Answer",items:[{p:program,t,s}]};
 }
 
 async function ask(q){
@@ -181,7 +184,7 @@ async function ask(q){
     grid.innerHTML=`<div class="empty">No passages in the handbook match this question.</div>`;
     st.outerHTML=`<div class="nc bub"><b>Not covered</b>The ${DOC} doesn’t answer this. Please contact the ${res.contact}.</div>`;
   }else{
-    grid.insertAdjacentHTML("beforeend",`<div class="src doc in"><div class="hd"><small>PDF</small>${DOC}</div><div class="bd"><b>68 pages</b>Source document</div></div>`);
+    grid.insertAdjacentHTML("beforeend",`<div class="src doc in"><div class="hd"><small>PDF</small>${DOC}</div><div class="bd"><b>${res.items[0].s.length} passage${res.items[0].s.length===1?"":"s"}</b>Retrieved from the documents</div></div>`);
     let n=0;
     res.items.forEach(it=>it.s.forEach(([pg,sec,txt])=>{grid.insertAdjacentHTML("beforeend",
       `<div class="src in" id="p${pg}" style="animation-delay:${.12*++n}s"><div class="hd"><small>${it.p}</small>p. ${pg}</div><div class="bd"><b>${sec}</b>${txt}</div></div>`)}));

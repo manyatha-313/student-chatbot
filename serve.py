@@ -11,6 +11,7 @@ The webpage calls /ask with fetch and renders `answer` plus `sources`.
 Run:  python serve.py        (http://localhost:8000)
 FastAPI/uvicorn ship with gradio, so there is no extra dependency.
 """
+import glob
 import os
 
 from fastapi import FastAPI
@@ -18,9 +19,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, HTMLResponse
 from pydantic import BaseModel
 
+import config
 import rag
 
-FRONTEND = os.path.join(os.path.dirname(os.path.abspath(__file__)), "campus_assistant_frontend.html")
+_here = os.path.dirname(os.path.abspath(__file__))
+# The page is named campus_assistant_frontend*.html (a "-logo" variant exists); take the first match.
+_matches = sorted(glob.glob(os.path.join(_here, "campus_assistant_frontend*.html")))
+FRONTEND = _matches[0] if _matches else os.path.join(_here, "campus_assistant_frontend.html")
 
 app = FastAPI(title="Campus Regulations Assistant")
 # Permissive CORS so the page works whether it is served from here or opened directly.
@@ -36,9 +41,12 @@ class Ask(BaseModel):
 @app.post("/ask")
 def ask(body: Ask):
     reply, found = index.answer(body.question)
+    # Same decision rag.answer() makes internally, surfaced so the page need not parse the text.
+    answered = bool(found) and found[0]["score"] >= config.RELEVANCE_THRESHOLD
+    contact = found[0]["contact"] if found else config.DEFAULT_CONTACT
     sources = [{"doc": c["doc"], "page": c["page"], "section": c.get("section", ""),
                 "score": round(c["score"], 3), "text": c["text"]} for c in found]
-    return {"answer": reply, "sources": sources}
+    return {"answered": answered, "answer": reply, "contact": contact, "sources": sources}
 
 
 @app.get("/")
