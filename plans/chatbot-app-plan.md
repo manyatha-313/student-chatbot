@@ -24,6 +24,7 @@ nothing downstream changes.
 | `llm.py` | Gemma 4 client via Google AI Studio; demo mode with no API key. |
 | `rag.py` | `RagIndex`: embed, retrieve (cosine), answer with citations + relevance-threshold refusal. |
 | `app.py` | Gradio UI: dataset loaded on startup, optional upload, answer + retrieved passages. |
+| `serve.py` | FastAPI backend for `campus_assistant_frontend.html`: `POST /ask` -> `{answer, sources}`, serves the page at `/`. FastAPI ships with gradio (no new dep). |
 | `eval/eval.py` + `eval/testset.json` | Deliverable 7: retrieval-hit %, keyword %, refusal accuracy; seed Q&A to expand to >=15. |
 
 ## Open seams for the bonus items
