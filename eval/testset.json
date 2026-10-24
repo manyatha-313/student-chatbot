@@ -1,25 +1,25 @@
 [
   {
     "question": "What is the minimum percentage of attendance required in each course for a B.E. student?",
-    "expect_doc": "RULE-BOOK.pdf",
+    "expect_doc": "SSIT_Handbook_2025-26.pdf",
     "expect_page": 21,
     "expect_keywords": ["85%"]
   },
   {
     "question": "By how much can the Vice-Chancellor condone a shortage of attendance?",
-    "expect_doc": "RULE-BOOK.pdf",
+    "expect_doc": "SSIT_Handbook_2025-26.pdf",
     "expect_page": 21,
     "expect_keywords": ["10%"]
   },
   {
     "question": "What attendance does the University expect for the MBA programme?",
-    "expect_doc": "RULE-BOOK.pdf",
+    "expect_doc": "SSIT_Handbook_2025-26.pdf",
     "expect_page": 41,
     "expect_keywords": ["100%"]
   },
   {
     "question": "What are the punishments for participating in ragging?",
-    "expect_doc": "RULE-BOOK.pdf",
+    "expect_doc": "SSIT_Handbook_2025-26.pdf",
     "expect_page": 51,
     "expect_keywords": ["admission"]
   },

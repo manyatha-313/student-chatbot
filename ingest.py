@@ -52,7 +52,7 @@ def load_dataset(dataset_dir=config.DATASET_DIR):
     is the file name and the contact is a generic default.
     """
     chunks = []
-    for path in sorted(glob.glob(os.path.join(dataset_dir, "*.pdf"))):
+    for path in sorted(glob.glob(os.path.join(dataset_dir, "**", "*.pdf"), recursive=True)):
         doc = os.path.basename(path)
         chunks.extend(split_into_chunks(read_pdf(path), doc, title=doc,
                                         contact=config.DEFAULT_CONTACT))

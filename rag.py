@@ -2,6 +2,9 @@
 
 Consumes the chunk schema from ingest.py / plans/datasetplan.md.
 """
+import json
+import os
+
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
@@ -23,9 +26,9 @@ class RagIndex:
         self.vectors = None
 
     def _embed_text(self, chunk):
-        # Put the title and section in front so short questions match the right
-        # chunk even when the body does not repeat the keyword (datasetplan 6).
-        return f"{chunk['title']} | {chunk['section']} | {chunk['text']}"
+        # Prebuilt chunks carry their own embed_text (title|section|heading|text);
+        # otherwise build the title|section|text form (datasetplan 6).
+        return chunk.get("embed_text") or f"{chunk['title']} | {chunk.get('section', '')} | {chunk['text']}"
 
     def build(self, chunks):
         if not chunks:
@@ -60,8 +63,17 @@ class RagIndex:
         return reply, found
 
 
+def load_chunks():
+    """Prefer the prebuilt chunks from scripts/prepare_dataset.py; fall back to
+    chunking the PDFs directly if that file is absent."""
+    if os.path.exists(config.CHUNKS_PATH):
+        with open(config.CHUNKS_PATH, encoding="utf-8") as f:
+            return [json.loads(line) for line in f if line.strip()]
+    return ingest.load_dataset()
+
+
 def build_from_dataset():
-    return RagIndex().build(ingest.load_dataset())
+    return RagIndex().build(load_chunks())
 
 
 if __name__ == "__main__":
