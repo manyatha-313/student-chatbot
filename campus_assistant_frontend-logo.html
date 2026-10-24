@@ -131,8 +131,8 @@ button{font:inherit;color:inherit;cursor:pointer}
 </section>
 
 <script>
-// Loaded from the backend (/branches) so the picker only offers departments that actually have documents.
-let SCOPES=[{program:null,branch:null,label:"All / General"}];
+const DOC="SSIT Handbook 2025-26";
+const BRANCHES=["CSE","CSE(DS)","CSE(AIML)","CSE(Cyber Security)","ISE","ECE","EEE","ME","BME","RAI","CIVIL"];
 const EXAMPLES=["What is the minimum attendance for exams?","How do I convert CGPA to percentage?","What are the hostel timings?"];
 // Demo data. Replace askBackend() with a fetch to your Gradio/Python API.
 const KB={
@@ -143,17 +143,13 @@ const KB={
 };
 const CONTACT={hostel:"Warden, Hostel Office",exam:"Dean (Examination)",def:"Administrative Office"};
 const $=s=>document.querySelector(s), sleep=ms=>new Promise(r=>setTimeout(r,ms));
-let prog=null, branch=null, busy=false, started=false;
+let prog="B.E.", branch="CSE", busy=false, started=false;
 
-const lbl=s=>s.label||(s.program+" "+s.branch);
-const cur=()=>SCOPES.find(s=>s.branch===branch&&s.program===prog)||SCOPES[0];
-function drop(){$("#ddl").innerHTML=SCOPES.map((s,i)=>`<li><button role="option" aria-selected="${s===cur()}" data-i="${i}">${lbl(s)}</button></li>`).join("");$("#br").textContent=lbl(cur())}
+function drop(){$("#ddl").innerHTML=BRANCHES.map(b=>`<li><button role="option" aria-selected="${b===branch}" data-b="${b}">${b}</button></li>`).join("");$("#br").textContent=branch}
 $("#ddb").onclick=e=>{e.stopPropagation();const l=$("#ddl");l.hidden=!l.hidden;$("#ddb").setAttribute("aria-expanded",!l.hidden)};
-$("#ddl").onclick=e=>{const i=e.target.dataset.i;if(i!==undefined){const s=SCOPES[+i];prog=s.program;branch=s.branch;drop();$("#ddl").hidden=true;$("#ddb").setAttribute("aria-expanded","false")}};
+$("#ddl").onclick=e=>{const b=e.target.dataset.b;if(b){branch=b;drop();$("#ddl").hidden=true;$("#ddb").setAttribute("aria-expanded","false")}};
 document.addEventListener("click",()=>{$("#ddl").hidden=true});
 drop();
-// Populate the department picker from the backend (only departments with documents).
-fetch("/branches").then(r=>r.json()).then(d=>{SCOPES=[{program:null,branch:null,label:"All / General"}].concat(d.scopes.map(s=>({program:s.program,branch:s.branch,label:s.program+" "+s.branch})));drop()}).catch(()=>{});
 $("#chips").innerHTML=EXAMPLES.map(x=>`<button class="chip">${x}</button>`).join("");
 $("#chips").onclick=e=>{if(e.target.classList.contains("chip"))ask(e.target.textContent)};
 $("#theme").onclick=()=>{const d=document.documentElement;d.dataset.theme=d.dataset.theme==="dark"?"light":"dark"};
@@ -163,7 +159,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey&&e.targe
 // Real call to the Python backend (serve.py). Returns the shape ask() expects.
 async function askBackend(q,program,course){
   const r=await fetch("/ask",{method:"POST",headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({question:q,branch:branch,program:program})});
+    body:JSON.stringify({question:q})});
   if(!r.ok)return {type:"none",contact:CONTACT.def};
   const d=await r.json();
   if(!d.answered)return {type:"none",contact:d.contact||CONTACT.def};
@@ -185,10 +181,10 @@ async function ask(q){
   st.children[0].className="";st.children[1].className="cur";await sleep(500);
   const grid=$("#grid"); grid.innerHTML="";
   if(res.type==="none"){
-    grid.innerHTML=`<div class="empty">No passages in the available documents match this question.</div>`;
-    st.outerHTML=`<div class="nc bub"><b>Not covered</b>This could not be verified from the available documents for ${branch?prog+" "+branch:"the college"}. Please contact the ${res.contact}.</div>`;
+    grid.innerHTML=`<div class="empty">No passages in the handbook match this question.</div>`;
+    st.outerHTML=`<div class="nc bub"><b>Not covered</b>The ${DOC} doesn’t answer this. Please contact the ${res.contact}.</div>`;
   }else{
-    grid.insertAdjacentHTML("beforeend",`<div class="src doc in"><div class="hd"><small>SCOPE</small>${branch?prog+" "+branch:"All departments"}</div><div class="bd"><b>${res.items[0].s.length} passage${res.items[0].s.length===1?"":"s"}</b>Retrieved from the official documents</div></div>`);
+    grid.insertAdjacentHTML("beforeend",`<div class="src doc in"><div class="hd"><small>PDF</small>${DOC}</div><div class="bd"><b>${res.items[0].s.length} passage${res.items[0].s.length===1?"":"s"}</b>Retrieved from the documents</div></div>`);
     let n=0;
     res.items.forEach(it=>it.s.forEach(([pg,sec,txt])=>{grid.insertAdjacentHTML("beforeend",
       `<div class="src in" id="p${pg}" style="animation-delay:${.12*++n}s"><div class="hd"><small>${it.p}</small>p. ${pg}</div><div class="bd"><b>${sec}</b>${txt}</div></div>`)}));

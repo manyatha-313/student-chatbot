@@ -36,26 +36,17 @@ index = rag.build_from_dataset()  # built once at startup
 
 class Ask(BaseModel):
     question: str
-    branch: str | None = None    # e.g. "CSE"; None = search all departments
-    program: str | None = None   # e.g. "B.E." / "M.Tech."
 
 
 @app.post("/ask")
 def ask(body: Ask):
-    reply, found = index.answer(body.question, branch=body.branch, program=body.program)
+    reply, found = index.answer(body.question)
     # Same decision rag.answer() makes internally, surfaced so the page need not parse the text.
     answered = bool(found) and found[0]["score"] >= config.RELEVANCE_THRESHOLD
     contact = found[0]["contact"] if found else config.DEFAULT_CONTACT
     sources = [{"doc": c["doc"], "page": c["page"], "section": c.get("section", ""),
                 "score": round(c["score"], 3), "text": c["text"]} for c in found]
     return {"answered": answered, "answer": reply, "contact": contact, "sources": sources}
-
-
-@app.get("/branches")
-def branches():
-    """Departments that actually have documents, for the picker (prevents
-    selecting a branch the index can't answer for)."""
-    return {"scopes": index.available_scopes()}
 
 
 @app.get("/")

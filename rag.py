@@ -51,42 +51,21 @@ class RagIndex:
         np.savez(config.VECTORS_CACHE, vectors=self.vectors, key=np.array(key))
         return self
 
-    def _candidate(self, chunk, branch, program):
-        """Department isolation: decide whether a chunk may be retrieved for the
-        selected branch/program. College-wide docs are always allowed; excluded
-        types never are; otherwise the branch (and program, if given) must match."""
-        ctype = chunk.get("type")
-        if ctype in config.EXCLUDE_TYPES:
-            return False
-        if ctype in config.COLLEGE_WIDE_TYPES or not chunk.get("branch"):
-            return True  # handbook / regulations apply to every department
-        if branch is None:
-            return True  # no department selected -> search everything (minus excluded)
-        if chunk.get("branch") != branch:
-            return False
-        if program and chunk.get("program") and chunk.get("program") != program:
-            return False
-        return True
-
-    def retrieve(self, question, top_k=config.TOP_K, branch=None, program=None):
-        """Return the top_k chunks with a cosine 'score' (1.0 = identical),
-        restricted to the selected department plus college-wide documents."""
+    def retrieve(self, question, top_k=config.TOP_K):
+        """Return the top_k chunks with a cosine 'score' (1.0 = identical)."""
         q = self.embedder.encode([question], normalize_embeddings=True)[0]
         scores = self.vectors @ q
-        allowed = [i for i, c in enumerate(self.chunks) if self._candidate(c, branch, program)]
-        if not allowed:
-            return []
-        allowed.sort(key=lambda i: scores[i], reverse=True)
-        return [{**self.chunks[i], "score": float(scores[i])} for i in allowed[:top_k]]
+        best = np.argsort(scores)[::-1][:top_k]
+        return [{**self.chunks[i], "score": float(scores[i])} for i in best]
 
-    def answer(self, question, branch=None, program=None):
-        """Return (answer_text, retrieved_chunks). Declines below the relevance
-        threshold (or when the selected department has no evidence) without
-        calling Gemma."""
-        found = self.retrieve(question, branch=branch, program=program)
+    def answer(self, question):
+        """Return (answer_text, retrieved_chunks). Declines below the
+        relevance threshold without calling Gemma."""
+        found = self.retrieve(question)
         contact = found[0]["contact"] if found else config.DEFAULT_CONTACT
         if not found or found[0]["score"] < config.RELEVANCE_THRESHOLD:
-            return config.REFUSAL_TEMPLATE.format(contact=contact), found
+            return (f'I could not find this in the college documents. '
+                    f'Please contact {contact}.', found)
 
         context = "\n\n".join(f"{_citation(c)} {c['text']}" for c in found)
         prompt = f"Context:\n{context}\n\nQuestion: {question}"
@@ -95,16 +74,6 @@ class RagIndex:
         reply = llm.generate(prompt, system_text=config.ANSWER_RULES.format(contact=contact),
                              demo_reply=demo)
         return reply, found
-
-    def available_scopes(self):
-        """Distinct (program, branch) pairs that have their own documents, for
-        the department picker. Excludes college-wide and excluded types."""
-        seen = {}
-        for c in self.chunks:
-            if c.get("branch") and c.get("type") not in config.EXCLUDE_TYPES \
-                    and c.get("type") not in config.COLLEGE_WIDE_TYPES:
-                seen[(c.get("program") or "", c["branch"])] = True
-        return [{"program": p, "branch": b} for (p, b) in sorted(seen)]
 
 
 def load_chunks():
