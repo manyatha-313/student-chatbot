@@ -43,7 +43,7 @@ Pages read from images: their text comes from `scripts/ocr_images.py` (the image
 
 Compare each one with its PDF page: the page, section and text should match.
 
-**BE_ECE_Year3_Syllabus.pdf, p. 35** - 22EC507 Dept. Skill Lab-3 - Units; Unit I
+**BE_ECE_Year3_Syllabus.pdf, p. 35** - 22EC507 Dept. Skill Lab-3 - Units; Unit I (Unit 1)
 
 > Unit Description Hrs I Microwave Vacuum Tubes: Introduction, Reflex Klystron Oscillator, Mechanisms of Oscillations, Modes of oscillations, Travelling wave Tube Amplifier, Magnetron Oscillator (Qualitative discussion, construction, operation). Microwave solid state devices: PIN diode and its applica
 
@@ -55,7 +55,7 @@ Compare each one with its PDF page: the page, section and text should match.
 
 > Reference Books: Sl No Text Book title Author Volume and Year of Edition 1 Foundations of Materials Science and Engineering Smith 3rd Edition McGraw Hill, 1997. 2 Structure and properties of Engineering materials V.S.R Murthy Tata McGraw Hill, 2003. 3 An Introduction to Metallurgy Alan Cottrell Univ
 
-**BE_CV_Year2_Syllabus.pdf, p. 42** - 22CI408 CONSTITUTION OF INDIA - Unit V
+**BE_CV_Year2_Syllabus.pdf, p. 42** - 22CI408 CONSTITUTION OF INDIA - Unit V (Unit 5)
 
 > V Constitutional Special Provisions for Scheduled Castes and Tribes, Women, Children and backward classes. Emergency provisions under Part XVIII. Electoral process, Amendment procedure, 42nd, 44th, 74th, 76th, and 91stConstitutional amendments. 6 hrs
 
@@ -71,15 +71,15 @@ Compare each one with its PDF page: the page, section and text should match.
 
 > Text Books: Sl No Text Book title Author Volume and Year of Edition 1 Business Intelligence and Analytics: System for Decision Support Ramesh Sharda, Dursun Delen, EfraimTurban, J.E.Aronson,Ting- Peng Liang, David King 10th Edition, Pearson Global Edition, 2013
 
-**MTech_DE_Year1_Syllabus.pdf, p. 8** - 24DEL13 Advanced Embedded System Design - Unit II
+**MTech_DE_Year1_Syllabus.pdf, p. 8** - 24DEL13 Advanced Embedded System Design - Unit II (Unit 2)
 
 > II EMBEDDED NETWORKING: Embedded Networking: Introduction, I/O Device Ports and Buses - Serial Bus communication protocols -RS232 standard - RS422 - RS485 - CAN Bus -Serial Peripheral Interface (SPI) - Inter Integrated Circuits (I2C) -need for device drivers. ARM ARCHITECTURE: Cortex-M3/M4 Microcont
 
-**BE_CSE_Year2_Syllabus.pdf, p. 6** - 22CS302 Data Structure - Data Structure; Units; Unit I
+**BE_CSE_Year2_Syllabus.pdf, p. 6** - 22CS302 Data Structure - Data Structure; Units; Unit I (Unit 1)
 
 > Subject: Data Structure Subject Code: 22CS302 L - T - P - C: 3-0-0-3 Unit Description Hrs I Pointers and Structures revisited, Stacks and its applications : Pointers and Structures revisited: accessing variables through pointers, passing pointers to a function, pointers to pointers, array of pointer
 
-**BE_ECE_Year4_Syllabus.pdf, p. 25** - EC7PE52 Satellite Communications and GPS - Unit V
+**BE_ECE_Year4_Syllabus.pdf, p. 25** - EC7PE52 Satellite Communications and GPS - Unit V (Unit 5)
 
 > V Remote Sensing Satellites: Introduction, Classification of remote sensing satellite systems, orbits, Payloads, Types of images: Image Classification, Interpretation, Applications. Weather Forecasting Satellites: Fundamentals, Images, Orbits, Payloads. . Navigation Satellites: Introduction, Develop
 
