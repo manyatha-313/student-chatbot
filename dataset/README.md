@@ -4,7 +4,7 @@ Official documents of **Sri Siddhartha Institute of Technology (SSIT), Tumakuru*
 
 How the PDFs are checked, cleaned and split into chunks is described in [`plans/datasetplan.md`](../plans/datasetplan.md).
 
-**Current totals:** 22 documents, 1,129 pages, **3,599 chunks**, of which 25 were read from images (OCR).
+**Current totals:** 23 documents (22 SSIT documents and 1 upGrad brochure), 1,153 pages, **3,651 chunks**, of which 27 were read from images (OCR).
 
 ## Folder layout
 
@@ -14,8 +14,9 @@ dataset/
   images.json             <- every image found in the PDFs: which are read (OCR) and which are skipped, and why
   pdfs/
     handbook/             <- college rules and regulations
-    syllabus/BE/          <- B.E. syllabi, one PDF per branch and year
-    syllabus/MTech/       <- M.Tech. syllabi, one PDF per specialisation and year
+    syllabus/BE/          <- B.E. syllabus, one PDF per branch and year
+    syllabus/MTech/       <- M.Tech. syllabus, one PDF per specialisation and year
+    other/                <- documents that are not from SSIT (the upGrad brochure)
   ocr/
     ocr_text.json         <- text read from the kept images (generated)
   processed/
@@ -74,15 +75,26 @@ python scripts/prepare_dataset.py
 | syllabus/MTech/MTech_PDM_Year1_Syllabus.pdf | MTech YR I PDM(ME).pdf | M.Tech. Product Design and Manufacturing, 1st year | 2024-25 | 49 | 153 | - |
 | syllabus/MTech/MTech_TPE_Year2_Syllabus.pdf | MTech YR II TPE(ME).pdf | M.Tech. Thermal Power Engineering, 2nd year (scheme only) | 2024-25 | 3 | 5 | - |
 | syllabus/MTech/MTech_CADS_Year1_Syllabus.pdf | MTech_Year-I_CADS(CV).pdf | M.Tech. Computer Aided Design of Structures, 1st year | 2024-25 | 51 | 194 | - |
+| other/upGrad_SoT_Brochure.pdf | Principle_Brochure.pdf | **Not an SSIT document.** Marketing brochure of upGrad School of Technology: its 4-year CSE degree, curriculum, campus life, faculty, admission process | not stated | 24 | 51 | 14, 15 |
 
-Contact offices: handbook chunks use the office of their part (e.g. Office of the Dean (Academics), the Anti-ragging Committee), and syllabus chunks use the Head of the Department. Academic years are read from the PDFs themselves and differ between documents (2023-24 to 2026-27).
+Contact offices: handbook chunks use the office of their part (e.g. Office of the Dean (Academics), the Anti-ragging Committee), syllabus chunks use the Head of the Department, and brochure chunks use upGrad's admissions contact.
+
+### The upGrad brochure
+
+It was added on request, but it is **not** an official SSIT document and does not mention SSIT. To stop the assistant presenting upGrad's claims as SSIT rules, every brochure chunk has:
+
+- `"type": "brochure"` and `"publisher": "upGrad School of Technology"` (every other chunk has `"publisher": "SSIT / SSAHE"`),
+- the title "upGrad School of Technology Brochure (not an SSIT document)" at the front of its `embed_text`, and
+- upGrad's admissions contact as its `contact`.
+
+The app can exclude it, or say "according to the upGrad brochure (not SSIT)" when it uses one of these chunks. Academic years are read from the PDFs themselves and differ between documents (2023-24 to 2026-27).
 
 ## Images (OCR)
 
 Some information is only in images. Every image-only page and every embedded image covering at least 8% of a page was looked at, and the decision is recorded in [`images.json`](images.json):
 
-- **Read (12 images, 25 chunks):** the SSAHE curriculum notifications (page 2 of the CSE, ECE and Civil syllabi, years 2-4), the ME 3rd and 4th semester scheme tables (ME Year 2, pages 4 and 39), and the SSAHE internship guidelines notice (CSE-CY Year 4, page 75).
-- **Skipped (17 images):** the Preamble to the Constitution poster at the start of nine syllabi (national, not college information), founders' portraits, logos and background images, covers, a blank page, and the handbook's plain 2025/2026 month calendars (no events; the holidays are already in the handbook's text on pages 64-65).
+- **Read (14 images, 27 chunks):** the SSAHE curriculum notifications (page 2 of the CSE, ECE and Civil syllabus, years 2-4), the ME 3rd and 4th semester scheme tables (ME Year 2, pages 4 and 39), the SSAHE internship guidelines notice (CSE-CY Year 4, page 75), and the brochure's 7-semester startup and research journey timelines (pages 14-15).
+- **Skipped (30 images):** the Preamble to the Constitution poster at the start of nine syllabus (national, not college information), founders' portraits, photos, company and university logos, background images whose text is already in the PDF, covers, a blank page, and the handbook's plain 2025/2026 month calendars (no events; the holidays are already in the handbook's text on pages 64-65).
 
 Chunks read from images have `"extraction": "ocr"`, and their heading starts with "Text read from an image: ...". OCR text can contain reading errors. The internship notice in particular is a low-resolution scan, so some of its words are run together, but its main facts are readable.
 
@@ -91,7 +103,6 @@ Chunks read from images have `"extraction": "ocr"`, and their heading starts wit
 | File | Why |
 |---|---|
 | Calendar-of-events-25-26.pdf | It is the calendar of events of **Sri Siddhartha Dental College & Hospital** (BDS/MDS exams), not SSIT. Using it would give engineering students wrong dates. |
-| Principle_Brochure.pdf | A marketing brochure of **upGrad School of Technology**; it does not mention SSIT. The brief requires official college documents. |
 
 ## Known gaps
 

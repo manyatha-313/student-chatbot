@@ -12,10 +12,10 @@ This plan covers only the documents: which PDFs we use, how we check them, how w
 
 | Rule | What it means for us |
 |---|---|
-| Official, publicly available regulations from our own college | Use only official SSIT / SSAHE documents: the handbook and the department syllabi. No notes or summaries written by us. |
-| At least two documents | We have 22 (1 handbook + 21 syllabi), and every citation names its document. |
+| Official, publicly available regulations from our own college | Use only official SSIT / SSAHE documents: the handbook and the department syllabus. No notes or summaries written by us. |
+| At least two documents | We have 22 SSIT documents (1 handbook + 21 syllabus) plus 1 upGrad brochure, and every citation names its document. |
 | Text-based PDFs only | The starter kit cannot read scanned pages. We read the useful images ourselves with OCR, before the notebook runs (section 4.1); the notebook still only sees text. |
-| Only our college's documents | Two files we were given were left out: a dental college calendar and an upGrad brochure (section 4.2). |
+| Only our college's documents | The dental college calendar was left out. The upGrad brochure was added on request, but every one of its chunks is marked as not an SSIT document (section 4.2). |
 | Each answer cites the document and page | Each chunk keeps its document name and page number, and a chunk never crosses a page boundary. |
 | Runs in Google Colab on CPU | Chunking runs once (about 30 seconds) and the chunks are saved, so the notebook only has to embed them. |
 | Embedding model `all-MiniLM-L6-v2` | It reads at most 256 tokens (about 180-200 words) per chunk and ignores the rest, so chunk bodies stay at or under about 150 words. |
@@ -86,17 +86,16 @@ Some college information exists only as an image: scanned notifications, and sch
 
 | | Images | What |
 |---|---|---|
-| **Kept** | 12 (25 chunks) | SSAHE curriculum notifications (page 2 of 9 syllabi), the ME 3rd and 4th semester scheme tables, the SSAHE internship guidelines notice (CSE-CY Year 4, p. 75) |
-| **Skipped** | 27 | Preamble to the Constitution poster (9), founders' portraits, logos and background images, covers, a blank page, the handbook's plain 2025/2026 month calendars (no events; the holidays are in the text on pp. 64-65), and the 10 pages of the dental college calendar |
+| **Kept** | 14 (27 chunks) | SSAHE curriculum notifications (page 2 of 9 syllabus), the ME 3rd and 4th semester scheme tables, the SSAHE internship guidelines notice (CSE-CY Year 4, p. 75), the brochure's startup and research journey timelines (pp. 14-15) |
+| **Skipped** | 40 | Preamble to the Constitution poster (9), founders' portraits, photos, company and university logos, background images whose text is already in the PDF, covers, a blank page, the handbook's plain 2025/2026 month calendars (no events; the holidays are in the text on pp. 64-65), and the 10 pages of the dental college calendar |
 
 OCR can misread words. The internship notice is a low-resolution scan, so some words run together, but its facts are readable (mandatory, zero credits, CIE only, 6 to 8 weeks).
 
-### 4.2 Documents left out
+### 4.2 Documents that are not from SSIT
 
-| File | Why |
-|---|---|
-| `Calendar-of-events-25-26.pdf` | The calendar of **Sri Siddhartha Dental College & Hospital** (BDS/MDS), not SSIT |
-| `Principle_Brochure.pdf` | A marketing brochure of **upGrad School of Technology**; it does not mention SSIT |
+**Left out:** `Calendar-of-events-25-26.pdf` is the calendar of **Sri Siddhartha Dental College & Hospital** (BDS/MDS), not SSIT. It would give engineering students wrong dates.
+
+**Added with a label:** `Principle_Brochure.pdf` (saved as `other/upGrad_SoT_Brochure.pdf`) is a marketing brochure of **upGrad School of Technology** and does not mention SSIT. It was added on request as type `brochure`. Each of its 51 chunks has `"publisher": "upGrad School of Technology"` (all others: `"SSIT / SSAHE"`), the title "upGrad School of Technology Brochure (not an SSIT document)" at the front of its `embed_text`, and upGrad's admissions contact. Each brochure page is treated as its own topic, so headings never carry over from one page to the next.
 
 ---
 
@@ -194,15 +193,15 @@ The script writes `dataset/processed/report.md` on every run with:
 2. **Length:** the number of chunks whose embedded text is over 190 words, and the number under 10 words.
 3. **Spot check:** 10 random chunks to read next to the original PDF pages.
 
-Current run: **22 documents, 1,129 pages, 3,599 chunks** (310 from the handbook, 3,289 from the syllabi; 25 read from images). 1 chunk is over the 190-word limit and 13 are under 10 words. Every syllabus chunk is labelled with its course, except 5 in `BE_CSE_Year3_Syllabus.pdf` (the PDF stores the text of those pages out of order).
+Current run: **23 documents, 1,153 pages, 3,651 chunks** (310 from the handbook, 3,290 from the syllabus, 51 from the upGrad brochure; 27 read from images). 1 chunk is over the 190-word limit and 15 are under 10 words. Every syllabus chunk is labelled with its course, except 5 in `BE_CSE_Year3_Syllabus.pdf` (the PDF stores the text of those pages out of order).
 
 **Coverage check against the brief's example questions:**
 
 | Question | Covered? | Where |
 |---|---|---|
 | Minimum attendance to sit the end-semester exam | Yes | Handbook p. 19 (`SRE 6.2`, 85% in each course) and p. 21 (`SRE 7.1`) |
-| Re-evaluation and its deadline | **No** | Not in any of the 22 PDFs. Refusal test, or add the exam regulations |
-| Hostel visiting hours | **No** | Not in any of the 22 PDFs. Refusal test, or add the hostel rules |
+| Re-evaluation and its deadline | **No** | Not in any of the 23 PDFs. Refusal test, or add the exam regulations |
+| Hostel visiting hours | **No** | Not in any of the 23 PDFs. Refusal test, or add the hostel rules |
 
 ---
 
@@ -227,7 +226,7 @@ For each run we record the percentage of questions answered correctly, and how o
 Because every chunk stores its document, section and clause, rules that differ between parts show up as chunks from different sections. Examples already in the handbook:
 
 - Attendance: **85%** for B.E. (`SRE 7.1`, p. 21), M.Tech. (`PG 2.1`, p. 27) and MCA (`MCA 8.0`, p. 35), but **75%** for MBA (`MBA 5.1`, p. 41). Asked "what is the minimum attendance?", the assistant should give both and say which program each applies to.
-- Academic years differ between the syllabi (2023-24 to 2026-27), so a question about "the current syllabus" may get answers from different years.
+- Academic years differ between the syllabus (2023-24 to 2026-27), so a question about "the current syllabus" may get answers from different years.
 
 The assistant should show both passages and say which program or year each applies to.
 
