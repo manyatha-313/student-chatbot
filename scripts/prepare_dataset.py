@@ -1,7 +1,7 @@
 """Prepare the college PDFs for the Campus Regulations Assistant (problem statement 2A).
 
 Follows plans/datasetplan.md: check each PDF, clean the text page by page, split it into
-chunks (by clause for the handbook, by course and unit for the syllabi) and save the chunks.
+chunks (by clause for the handbook, by course and unit for the syllabus) and save the chunks.
 
 Usage:
     python scripts/prepare_dataset.py
@@ -91,7 +91,7 @@ def header_key(line):
 
 
 def is_heading_like(line):
-    """Headings are never removed as page headers - except the scheme title, which some syllabi print on every page."""
+    """Headings are never removed as page headers - except the scheme title, which some syllabus PDFs print on every page."""
     return bool(CLAUSE.match(line) or SUBJECT.match(line) or UNITS.match(line)
                 or any(p.match(line) for p, name in SYLLABUS_HEADINGS
                        if name != "Scheme of Teaching and Examination"))
@@ -229,7 +229,7 @@ def detect_heading(line, doc, state):
 
 def section_of(doc, state):
     if doc["type"] != "syllabus":
-        return state.get("part") or "Front matter"
+        return state.get("part") or doc.get("default_section", "Front matter")
     if state.get("course"):
         code = f"{state['code']} " if state.get("code") else ""
         return f"{code}{state['course']}"
@@ -246,6 +246,8 @@ def split_into_blocks(doc, pages, raw_pages, ocr_pages):
         state["ocr"] = False
         if page_number in ocr_pages:                        # a scanned notice or table stands on its own
             state.update(course=None, code=None, in_units=False, last=None)
+        if doc.get("pages_stand_alone"):                    # e.g. a brochure: each page is its own topic
+            state["last"] = None
         if doc["type"] == "syllabus":
             state["semester"] = find_semester(raw) or state["semester"]
         current = None
@@ -270,7 +272,8 @@ def split_into_blocks(doc, pages, raw_pages, ocr_pages):
             if found or current is None:
                 if found:
                     label = found[1]
-                    state["last"] = label
+                    if not label.startswith(IMAGE_MARKER.strip("[")):
+                        state["last"] = label
                 else:                                                 # a page that continues the last heading
                     label = f"{state['last']} (continued)" if state.get("last") else None
                 if found and found[0] == "part":
@@ -386,6 +389,7 @@ def make_chunks(doc, blocks, branches):
                 "semester": piece["semester"],
                 "academic_year": doc.get("academic_year"),
                 "department": doc.get("department"),
+                "publisher": doc.get("publisher", "SSIT / SSAHE"),
                 "page": piece["page"],
                 "section": piece["section"],
                 "heading": heading,
