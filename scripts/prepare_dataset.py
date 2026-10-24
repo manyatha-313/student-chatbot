@@ -221,7 +221,8 @@ def detect_heading(line, doc, state):
     if state.get("in_units"):
         m = UNIT_ROW.match(line)
         if m:
-            return "unit", f"Unit {m.group(1).upper()}"
+            roman = m.group(1).upper()
+            return "unit", f"Unit {roman} (Unit {ROMAN[roman]})"     # students ask "unit 2" as often as "unit II"
     if is_caps_heading(line) and not state.get("course"):
         return "sub", line
     return None
