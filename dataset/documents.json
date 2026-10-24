@@ -8,7 +8,11 @@
     "VLSI-ES": "VLSI and Embedded Systems",
     "DE": "Digital Electronics",
     "PDM": "Product Design and Manufacturing",
-    "TPE": "Thermal Power Engineering"
+    "TPE": "Thermal Power Engineering",
+    "CV": "Civil Engineering",
+    "CSE-CY": "Computer Science and Engineering (Cyber Security)",
+    "CSE-DS": "Computer Science and Engineering (Data Science)",
+    "CADS": "Computer Aided Design of Structures"
   },
   "documents": [
     {
@@ -50,6 +54,12 @@
     {"file": "syllabus/MTech/MTech_VLSI-ES_Year1_Syllabus.pdf", "original_name": "EC MTech_Y1.pdf",         "type": "syllabus", "program": "M.Tech.", "branch": "VLSI-ES", "year": 1, "department": "Electronics and Communication Engineering"},
     {"file": "syllabus/MTech/MTech_DE_Year1_Syllabus.pdf",      "original_name": "MTech_Year-I_DE.pdf",     "type": "syllabus", "program": "M.Tech.", "branch": "DE",      "year": 1, "department": "Electronics and Communication Engineering"},
     {"file": "syllabus/MTech/MTech_PDM_Year1_Syllabus.pdf",     "original_name": "MTech YR I PDM(ME).pdf",  "type": "syllabus", "program": "M.Tech.", "branch": "PDM",     "year": 1, "department": "Mechanical Engineering"},
-    {"file": "syllabus/MTech/MTech_TPE_Year2_Syllabus.pdf",     "original_name": "MTech YR II TPE(ME).pdf", "type": "syllabus", "program": "M.Tech.", "branch": "TPE",     "year": 2, "department": "Mechanical Engineering"}
+    {"file": "syllabus/MTech/MTech_TPE_Year2_Syllabus.pdf",     "original_name": "MTech YR II TPE(ME).pdf", "type": "syllabus", "program": "M.Tech.", "branch": "TPE",     "year": 2, "department": "Mechanical Engineering"},
+    {"file": "syllabus/BE/BE_CV_Year2_Syllabus.pdf",     "original_name": "CV YR 2.pdf", "type": "syllabus", "program": "B.E.", "branch": "CV",     "year": 2, "department": "Civil Engineering"},
+    {"file": "syllabus/BE/BE_CV_Year3_Syllabus.pdf",     "original_name": "CV YR 3.pdf", "type": "syllabus", "program": "B.E.", "branch": "CV",     "year": 3, "department": "Civil Engineering"},
+    {"file": "syllabus/BE/BE_CV_Year4_Syllabus.pdf",     "original_name": "CV YR 4.pdf", "type": "syllabus", "program": "B.E.", "branch": "CV",     "year": 4, "department": "Civil Engineering"},
+    {"file": "syllabus/BE/BE_CSE-CY_Year4_Syllabus.pdf", "original_name": "CSE(Cy) Scheme & Syallabus 4th Year (2022 Scheme).pdf", "type": "syllabus", "program": "B.E.", "branch": "CSE-CY", "year": 4, "department": "Computer Science and Engineering (Cyber Security)"},
+    {"file": "syllabus/BE/BE_CSE-DS_Year4_Syllabus.pdf", "original_name": "CSE(DS) Scheme and Syllabus 4th Year (NEP-160 Credits).pdf", "type": "syllabus", "program": "B.E.", "branch": "CSE-DS", "year": 4, "department": "Computer Science and Engineering (Data Science)"},
+    {"file": "syllabus/MTech/MTech_CADS_Year1_Syllabus.pdf", "original_name": "MTech_Year-I_CADS(CV).pdf", "type": "syllabus", "program": "M.Tech.", "branch": "CADS", "year": 1, "department": "Civil Engineering"}
   ]
 }
