@@ -1,4 +1,13 @@
+# Same set the HackDay starter kit installs, pinned the same way, plus:
+#   numpy        - used directly in the retrieval step
+#   python-dotenv - loads GOOGLE_API_KEY from .env (replaces Colab Secrets off-Colab)
+# (fastapi/uvicorn for the web API come bundled with gradio, so not listed.)
 pypdf>=6
+sentence-transformers
+gradio>=6,<7
+google-genai
+numpy
+python-dotenv
 # only for scripts/ocr_images.py (reading text from images)
 pymupdf
 rapidocr_onnxruntime

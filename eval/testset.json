@@ -1,0 +1,86 @@
+[
+  {
+    "question": "What is the minimum percentage of attendance required in each course for a B.E. student?",
+    "expect_doc": "SSIT_Handbook_2025-26.pdf",
+    "expect_page": 21,
+    "expect_keywords": ["85%"]
+  },
+  {
+    "question": "By how much can the Vice-Chancellor condone a shortage of attendance?",
+    "expect_doc": "SSIT_Handbook_2025-26.pdf",
+    "expect_page": 21,
+    "expect_keywords": ["10%"]
+  },
+  {
+    "question": "How is CGPA converted into percentage of marks for B.E.?",
+    "expect_doc": "SSIT_Handbook_2025-26.pdf",
+    "expect_page": 18,
+    "expect_keywords": ["0.75"]
+  },
+  {
+    "question": "What attendance does the University expect for the MBA programme?",
+    "expect_doc": "SSIT_Handbook_2025-26.pdf",
+    "expect_page": 41,
+    "expect_keywords": ["100%"]
+  },
+  {
+    "question": "What is the minimum attendance required in each course for an M.Tech (PG) student?",
+    "expect_doc": "SSIT_Handbook_2025-26.pdf",
+    "expect_page": 27,
+    "expect_keywords": ["85%"]
+  },
+  {
+    "question": "What are the punishments for participating in ragging?",
+    "expect_doc": "SSIT_Handbook_2025-26.pdf",
+    "expect_page": 51,
+    "expect_keywords": ["admission"]
+  },
+  {
+    "question": "What counts as a form of ragging?",
+    "expect_doc": "SSIT_Handbook_2025-26.pdf",
+    "expect_page": 50,
+    "expect_keywords": ["disorderly"]
+  },
+  {
+    "question": "Under whose norms is the Anti-ragging Committee formed?",
+    "expect_doc": "SSIT_Handbook_2025-26.pdf",
+    "expect_page": 50,
+    "expect_keywords": ["UGC"]
+  },
+  {
+    "question": "How many backlog courses may be registered during a regular semester?",
+    "expect_doc": "SSIT_Handbook_2025-26.pdf",
+    "expect_page": 15,
+    "expect_keywords": ["2 courses"]
+  },
+  {
+    "question": "What is the eligibility to pass a practical course in the PG programme?",
+    "expect_doc": "SSIT_Handbook_2025-26.pdf",
+    "expect_page": 28,
+    "expect_keywords": ["50%"]
+  },
+  {
+    "question": "Which policy framework has the institute introduced for its curriculum?",
+    "expect_doc": "SSIT_Handbook_2025-26.pdf",
+    "expect_page": 9,
+    "expect_keywords": ["NEP"]
+  },
+  {
+    "question": "Which course covers Automata Theory and Computation in the CSE syllabus?",
+    "expect_doc": "BE_CSE_Year2_Syllabus.pdf",
+    "expect_page": 38,
+    "expect_keywords": ["Automata"]
+  },
+  {
+    "question": "Who won the 2022 FIFA World Cup?",
+    "expect_refusal": true
+  },
+  {
+    "question": "What is the capital of France?",
+    "expect_refusal": true
+  },
+  {
+    "question": "Can you give me a recipe for chicken biryani?",
+    "expect_refusal": true
+  }
+]
