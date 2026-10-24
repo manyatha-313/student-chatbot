@@ -17,11 +17,12 @@ if not exist ".venv\" (
 REM --- Note if no API key: the app still runs, in demo mode ---
 if not exist ".env" echo [note] No .env found - running in demo mode. Copy .env.example to .env and add GOOGLE_API_KEY for real answers.
 
-REM --- Open the page once the server has had time to load the model ---
-start "" cmd /c "timeout /t 25 >nul & start """" http://localhost:8000"
+REM --- Open the page only once the server actually responds (it embeds the
+REM     documents before it starts listening; the first run also downloads the model) ---
+start "" powershell -NoProfile -WindowStyle Hidden -Command "for($i=0;$i -lt 150;$i++){try{$null=Invoke-WebRequest -UseBasicParsing http://localhost:8000 -TimeoutSec 2;Start-Process 'http://localhost:8000';break}catch{Start-Sleep -Seconds 2}}"
 
-REM --- Run the server (Ctrl+C to stop). First launch downloads the embedding model. ---
-echo Starting server on http://localhost:8000  (Ctrl+C to stop)
+REM --- Run the server (Ctrl+C to stop). ---
+echo Starting server... the browser opens automatically when it is ready (http://localhost:8000, Ctrl+C to stop)
 python serve.py
 goto :eof
 

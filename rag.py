@@ -2,6 +2,7 @@
 
 Consumes the chunk schema from ingest.py / plans/datasetplan.md.
 """
+import hashlib
 import json
 import os
 
@@ -34,8 +35,20 @@ class RagIndex:
         if not chunks:
             raise ValueError("No chunks to index. Add text-based PDFs to dataset/.")
         self.chunks = chunks
-        self.vectors = self.embedder.encode(
-            [self._embed_text(c) for c in chunks], normalize_embeddings=True)
+        texts = [self._embed_text(c) for c in chunks]
+        # Cache the vectors so startup is fast; the key invalidates when the
+        # texts or the embedding model change (e.g. the dataset is regenerated).
+        key = hashlib.md5((config.EMBED_MODEL_NAME + "\n".join(texts)).encode("utf-8")).hexdigest()
+        try:
+            cached = np.load(config.VECTORS_CACHE, allow_pickle=False)
+            if str(cached["key"]) == key:
+                self.vectors = cached["vectors"]
+                return self
+        except (FileNotFoundError, OSError, KeyError):
+            pass
+        self.vectors = self.embedder.encode(texts, normalize_embeddings=True)
+        os.makedirs(os.path.dirname(config.VECTORS_CACHE), exist_ok=True)
+        np.savez(config.VECTORS_CACHE, vectors=self.vectors, key=np.array(key))
         return self
 
     def retrieve(self, question, top_k=config.TOP_K):

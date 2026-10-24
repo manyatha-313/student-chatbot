@@ -21,6 +21,7 @@ RELEVANCE_THRESHOLD = 0.30  # decline if the best chunk scores below this
 
 DATASET_DIR = "dataset"
 CHUNKS_PATH = "dataset/processed/chunks.jsonl"  # prebuilt by scripts/prepare_dataset.py; preferred over on-the-fly chunking
+VECTORS_CACHE = "dataset/processed/vectors.npz"  # embedding cache (gitignored); rebuilt when the chunks change
 DEFAULT_CONTACT = "the relevant college office"  # used until dataset/README.md lists per-doc contacts
 
 # The rules Gemma follows. Context-only prevents invented answers; the fixed
