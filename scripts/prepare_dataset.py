@@ -91,7 +91,7 @@ def header_key(line):
 
 
 def is_heading_like(line):
-    """Headings are never removed as page headers - except the scheme title, which some syllabus print on every page."""
+    """Headings are never removed as page headers - except the scheme title, which some syllabus PDFs print on every page."""
     return bool(CLAUSE.match(line) or SUBJECT.match(line) or UNITS.match(line)
                 or any(p.match(line) for p, name in SYLLABUS_HEADINGS
                        if name != "Scheme of Teaching and Examination"))

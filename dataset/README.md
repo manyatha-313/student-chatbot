@@ -93,8 +93,8 @@ The app can exclude it, or say "according to the upGrad brochure (not SSIT)" whe
 
 Some information is only in images. Every image-only page and every embedded image covering at least 8% of a page was looked at, and the decision is recorded in [`images.json`](images.json):
 
-- **Read (14 images, 27 chunks):** the SSAHE curriculum notifications (page 2 of the CSE, ECE and Civil syllabus, years 2-4), the ME 3rd and 4th semester scheme tables (ME Year 2, pages 4 and 39), the SSAHE internship guidelines notice (CSE-CY Year 4, page 75), and the brochure's 7-semester startup and research journey timelines (pages 14-15).
-- **Skipped (30 images):** the Preamble to the Constitution poster at the start of nine syllabus (national, not college information), founders' portraits, photos, company and university logos, background images whose text is already in the PDF, covers, a blank page, and the handbook's plain 2025/2026 month calendars (no events; the holidays are already in the handbook's text on pages 64-65).
+- **Read (14 images, 27 chunks):** the SSAHE curriculum notifications (page 2 of the CSE, ECE and Civil syllabus PDFs, years 2-4), the ME 3rd and 4th semester scheme tables (ME Year 2, pages 4 and 39), the SSAHE internship guidelines notice (CSE-CY Year 4, page 75), and the brochure's 7-semester startup and research journey timelines (pages 14-15).
+- **Skipped (30 images):** the Preamble to the Constitution poster at the start of nine syllabus PDFs (national, not college information), founders' portraits, photos, company and university logos, background images whose text is already in the PDF, covers, a blank page, and the handbook's plain 2025/2026 month calendars (no events; the holidays are already in the handbook's text on pages 64-65).
 
 Chunks read from images have `"extraction": "ocr"`, and their heading starts with "Text read from an image: ...". OCR text can contain reading errors. The internship notice in particular is a low-resolution scan, so some of its words are run together, but its main facts are readable.
 

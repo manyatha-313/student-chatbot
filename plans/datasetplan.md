@@ -13,7 +13,7 @@ This plan covers only the documents: which PDFs we use, how we check them, how w
 | Rule | What it means for us |
 |---|---|
 | Official, publicly available regulations from our own college | Use only official SSIT / SSAHE documents: the handbook and the department syllabus. No notes or summaries written by us. |
-| At least two documents | We have 22 SSIT documents (1 handbook + 21 syllabus) plus 1 upGrad brochure, and every citation names its document. |
+| At least two documents | We have 22 SSIT documents (1 handbook + 21 syllabus PDFs) plus 1 upGrad brochure, and every citation names its document. |
 | Text-based PDFs only | The starter kit cannot read scanned pages. We read the useful images ourselves with OCR, before the notebook runs (section 4.1); the notebook still only sees text. |
 | Only our college's documents | The dental college calendar was left out. The upGrad brochure was added on request, but every one of its chunks is marked as not an SSIT document (section 4.2). |
 | Each answer cites the document and page | Each chunk keeps its document name and page number, and a chunk never crosses a page boundary. |
@@ -86,7 +86,7 @@ Some college information exists only as an image: scanned notifications, and sch
 
 | | Images | What |
 |---|---|---|
-| **Kept** | 14 (27 chunks) | SSAHE curriculum notifications (page 2 of 9 syllabus), the ME 3rd and 4th semester scheme tables, the SSAHE internship guidelines notice (CSE-CY Year 4, p. 75), the brochure's startup and research journey timelines (pp. 14-15) |
+| **Kept** | 14 (27 chunks) | SSAHE curriculum notifications (page 2 of 9 syllabus PDFs), the ME 3rd and 4th semester scheme tables, the SSAHE internship guidelines notice (CSE-CY Year 4, p. 75), the brochure's startup and research journey timelines (pp. 14-15) |
 | **Skipped** | 40 | Preamble to the Constitution poster (9), founders' portraits, photos, company and university logos, background images whose text is already in the PDF, covers, a blank page, the handbook's plain 2025/2026 month calendars (no events; the holidays are in the text on pp. 64-65), and the 10 pages of the dental college calendar |
 
 OCR can misread words. The internship notice is a low-resolution scan, so some words run together, but its facts are readable (mandatory, zero credits, CIE only, 6 to 8 weeks).
@@ -193,7 +193,7 @@ The script writes `dataset/processed/report.md` on every run with:
 2. **Length:** the number of chunks whose embedded text is over 190 words, and the number under 10 words.
 3. **Spot check:** 10 random chunks to read next to the original PDF pages.
 
-Current run: **23 documents, 1,153 pages, 3,651 chunks** (310 from the handbook, 3,290 from the syllabus, 51 from the upGrad brochure; 27 read from images). 1 chunk is over the 190-word limit and 15 are under 10 words. Every syllabus chunk is labelled with its course, except 5 in `BE_CSE_Year3_Syllabus.pdf` (the PDF stores the text of those pages out of order).
+Current run: **23 documents, 1,153 pages, 3,651 chunks** (310 from the handbook, 3,290 from the syllabus PDFs, 51 from the upGrad brochure; 27 read from images). 1 chunk is over the 190-word limit and 15 are under 10 words. Every syllabus chunk is labelled with its course, except 5 in `BE_CSE_Year3_Syllabus.pdf` (the PDF stores the text of those pages out of order).
 
 **Coverage check against the brief's example questions:**
 
@@ -226,7 +226,7 @@ For each run we record the percentage of questions answered correctly, and how o
 Because every chunk stores its document, section and clause, rules that differ between parts show up as chunks from different sections. Examples already in the handbook:
 
 - Attendance: **85%** for B.E. (`SRE 7.1`, p. 21), M.Tech. (`PG 2.1`, p. 27) and MCA (`MCA 8.0`, p. 35), but **75%** for MBA (`MBA 5.1`, p. 41). Asked "what is the minimum attendance?", the assistant should give both and say which program each applies to.
-- Academic years differ between the syllabus (2023-24 to 2026-27), so a question about "the current syllabus" may get answers from different years.
+- Academic years differ between the syllabus PDFs (2023-24 to 2026-27), so a question about "the current syllabus" may get answers from different years.
 
 The assistant should show both passages and say which program or year each applies to.
 
