@@ -26,7 +26,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import rag
 
 TESTSET = os.path.join(os.path.dirname(os.path.abspath(__file__)), "testset.json")
-REFUSAL_MARK = "could not find"
+REFUSAL_MARK = "could not verify"
 
 
 def run(testset_path=TESTSET):
