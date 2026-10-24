@@ -6,7 +6,8 @@ chunks (by clause for the handbook, by course and unit for the syllabi) and save
 Usage:
     python scripts/prepare_dataset.py
 
-Reads  dataset/documents.json and the PDFs in dataset/pdfs/
+Reads  dataset/documents.json, the PDFs in dataset/pdfs/ and, when present, the text read
+       from images by scripts/ocr_images.py (dataset/ocr/ocr_text.json)
 Writes dataset/processed/chunks.jsonl  (one chunk per line)
        dataset/processed/report.md     (checks and statistics)
 Needs  pypdf (pip install pypdf)
@@ -23,7 +24,9 @@ from pypdf import PdfReader
 ROOT = Path(__file__).resolve().parent.parent
 DATASET = ROOT / "dataset"
 PDF_DIR = DATASET / "pdfs"
+OCR_FILE = DATASET / "ocr" / "ocr_text.json"
 OUT_DIR = DATASET / "processed"
+IMAGE_MARKER = "[Text read from an image"    # starts OCR text: "[Text read from an image: <what it is>]"
 
 MAX_WORDS = 130       # longest chunk body; leaves room for the prefix inside MiniLM's 256 tokens
 MIN_WORDS = 30        # shorter blocks are joined with the next block on the same page
@@ -38,8 +41,8 @@ ROMAN = {"I": 1, "II": 2, "III": 3, "IV": 4, "V": 5, "VI": 6, "VII": 7, "VIII": 
 CLAUSE = re.compile(r"^(SRE|PG|MCA|MBA)\s*(\d+(?:\.\d+)+)\s*:?\s*(.*)$")
 DEFINITION = re.compile(r"^(\d{1,2})\s*\.\s*([A-Z][^:.]{2,60}):")
 STAFF_GROUP = re.compile(r"^([A-Za-z&().,/ -]{2,40}):\s*(Teaching|Non-Teaching)\s*$", re.I)
-SUBJECT = re.compile(r"^(?:Subject|Course(?:\s+Title)?)\s*:\s*(.+)$", re.I)
-SUBJECT_CODE = re.compile(r"(?:Subject|Course|Sub\.?)\s*Code\s*:\s*([0-9]{2}\s?[A-Z]{2,}[0-9A-Z]*)", re.I)
+SUBJECT = re.compile(r"^(?:Subject|Course)(?:\s+(?:Title|Name))?\s*:\s*(.+)$", re.I)
+SUBJECT_CODE = re.compile(r"(?:Subject|Course|Sub\.?)\s*Code\s*:\s*([0-9]{2}\s?[A-Z]{2,}[0-9A-Z]*|[A-Z]{2,}[0-9][0-9A-Z]*)", re.I)
 UNITS = re.compile(r"^(?:Unit|Module)\s+(?:No\.?\s+)?(?:Description|Contents?)\b", re.I)
 UNIT_ROW = re.compile(r"^(I|II|III|IV|V|VI|VII|VIII|v)(?:\s+|$)(.*)$")
 SYLLABUS_HEADINGS = [
@@ -171,8 +174,13 @@ def clean_pages(raw_pages, doc_type):
 # ---------------------------------------------------------------- step 3: split into blocks
 def detect_heading(line, doc, state):
     """Returns (kind, label) when the line starts a new block, otherwise None. Updates state."""
-    if doc["type"] == "handbook":
-        for part in doc["parts"]:
+    if line.startswith(IMAGE_MARKER):
+        state["ocr"] = True
+        return "sub", line.strip("[]")
+    if state.get("ocr"):
+        return None                       # text read from an image stays one block under its image label
+    if doc["type"] != "syllabus":                                  # handbook
+        for part in doc.get("parts", []):
             if line.startswith(part["starts_with"]):
                 state.update(part=part["title"], contact=part["contact"], parent=None)
                 return "part", part["title"]
@@ -220,7 +228,7 @@ def detect_heading(line, doc, state):
 
 
 def section_of(doc, state):
-    if doc["type"] == "handbook":
+    if doc["type"] != "syllabus":
         return state.get("part") or "Front matter"
     if state.get("course"):
         code = f"{state['code']} " if state.get("code") else ""
@@ -228,17 +236,21 @@ def section_of(doc, state):
     return "Programme overview and scheme"
 
 
-def split_into_blocks(doc, pages, raw_pages):
-    """Groups each page's lines under the heading that precedes them. Blocks never cross pages."""
+def split_into_blocks(doc, pages, raw_pages, ocr_pages):
+    """Groups each page's lines under the heading that precedes them. Blocks never cross pages.
+    ocr_pages: page numbers whose whole text was read from an image."""
     state = {"part": None, "parent": None, "course": None, "code": None, "last": None,
              "semester": None, "in_units": False, "contact": doc.get("contact")}
     blocks = []
     for page_number, (lines, raw) in enumerate(zip(pages, raw_pages), start=1):
+        state["ocr"] = False
+        if page_number in ocr_pages:                        # a scanned notice or table stands on its own
+            state.update(course=None, code=None, in_units=False, last=None)
         if doc["type"] == "syllabus":
             state["semester"] = find_semester(raw) or state["semester"]
         current = None
         for line in lines:
-            if doc["type"] == "syllabus":
+            if doc["type"] == "syllabus" and not state["ocr"]:
                 m = SUBJECT_CODE.search(line)
                 if m:
                     code = m.group(1).upper().replace(" ", "")
@@ -248,7 +260,7 @@ def split_into_blocks(doc, pages, raw_pages):
                         state.update(course=title, code=code, in_units=False, last=title)
                         current = {"page": page_number, "labels": [title], "parent": None,
                                    "section": section_of(doc, state), "semester": state.get("semester"),
-                                   "contact": doc.get("contact"), "lines": [title]}
+                                   "contact": doc.get("contact"), "ocr": state["ocr"], "lines": [title]}
                         blocks.append(current)
                     else:
                         state["code"] = code
@@ -264,9 +276,10 @@ def split_into_blocks(doc, pages, raw_pages):
                 if found and found[0] == "part":
                     state["last"] = None
                 current = {"page": page_number, "labels": [label] if label else [],
-                           "parent": state.get("parent") if doc["type"] == "handbook" else None,
+                           "parent": state.get("parent") if doc["type"] != "syllabus" else None,
                            "section": section_of(doc, state), "semester": state.get("semester"),
-                           "contact": state.get("contact") or doc.get("contact"), "lines": []}
+                           "contact": state.get("contact") or doc.get("contact"),
+                           "ocr": state["ocr"], "lines": []}
                 blocks.append(current)
             current["lines"].append(line)
     return [b for b in blocks if b["lines"]]
@@ -283,7 +296,7 @@ def merge_small(blocks):
     for block in blocks:
         prev = merged[-1] if merged else None
         if (prev and prev["page"] == block["page"] and prev["section"] == block["section"]
-                and prev["parent"] == block["parent"] and words_of(prev) < MIN_WORDS
+                and prev["parent"] == block["parent"] and prev["ocr"] == block["ocr"] and words_of(prev) < MIN_WORDS
                 and (words_of(prev) + words_of(block) <= MAX_WORDS + 20 or is_heading_only(prev))):
             prev["lines"] += block["lines"]
             prev["labels"] += [h for h in block["labels"] if h not in prev["labels"]]
@@ -341,7 +354,7 @@ def split_large(block):
 
 # ---------------------------------------------------------------- step 5: build chunk records
 def describe(doc, branches):
-    if doc["type"] == "handbook":
+    if doc["type"] != "syllabus":
         return doc["title"]
     return f"{doc['program']} {doc['branch']} ({branches[doc['branch']]}) Year {doc['year']} Syllabus"
 
@@ -381,6 +394,7 @@ def make_chunks(doc, blocks, branches):
                 "text": text,
                 "embed_text": " | ".join(prefix) + " | " + " ".join(text.split()),
                 "words": len(text.split()),
+                "extraction": "ocr" if piece["ocr"] else "text",
             }
             chunks.append(chunk)
     return chunks
@@ -390,6 +404,9 @@ def make_chunks(doc, blocks, branches):
 def main():
     manifest = json.loads((DATASET / "documents.json").read_text(encoding="utf-8"))
     branches = manifest["branches"]
+    ocr_text = json.loads(OCR_FILE.read_text(encoding="utf-8")) if OCR_FILE.exists() else {}
+    images = json.loads((DATASET / "images.json").read_text(encoding="utf-8"))
+    image_what = {f"{i['file']}#{i['page']}": i["what"] for i in images["keep"]}
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     all_chunks, report = [], []
 
@@ -398,20 +415,37 @@ def main():
         raw_pages = read_pages(path)
         page_words = [len(t.split()) for t in raw_pages]
         low_pages = [i for i, w in enumerate(page_words, start=1) if w < LOW_TEXT_WORDS]
-        usable = len(raw_pages) - len(low_pages)
+
+        # text read from kept images: replaces an image-only page, or is added below a page's own text
+        ocr_pages, image_pages = set(), set()
+        for page_number in range(1, len(raw_pages) + 1):
+            key = f"{doc['file']}#{page_number}"
+            if not ocr_text.get(key):
+                continue
+            marked = f"{IMAGE_MARKER}: {image_what.get(key, 'image')}]\n{ocr_text[key]}"
+            if page_number in low_pages:
+                raw_pages[page_number - 1] = marked
+                ocr_pages.add(page_number)
+            else:
+                raw_pages[page_number - 1] += "\n" + marked
+                image_pages.add(page_number)
+
+        usable = len(raw_pages) - len(set(low_pages) - ocr_pages)
         status = "OK" if usable >= 0.5 * len(raw_pages) else "FLAGGED: mostly image-only, needs a text-based copy"
         doc.setdefault("academic_year", find_academic_year(raw_pages))
 
         if status == "OK":
             pages = clean_pages(raw_pages, doc["type"])
-            blocks = merge_small(split_into_blocks(doc, pages, raw_pages))
+            blocks = merge_small(split_into_blocks(doc, pages, raw_pages, ocr_pages))
             chunks = make_chunks(doc, blocks, branches)
         else:
             chunks = []
         all_chunks += chunks
         sizes = [c["words"] for c in chunks] or [0]
         report.append({"doc": Path(doc["file"]).name, "original": doc.get("original_name"), "pages": len(raw_pages),
-                       "words": sum(page_words), "low_pages": low_pages, "status": status,
+                       "words": sum(page_words), "status": status,
+                       "low_pages": [p for p in low_pages if p not in ocr_pages],
+                       "ocr_pages": sorted(ocr_pages | image_pages),
                        "academic_year": doc.get("academic_year"), "chunks": len(chunks),
                        "min": min(sizes), "avg": round(sum(sizes) / len(sizes)), "max": max(sizes),
                        "semesters": sorted({c["semester"] for c in chunks if c["semester"]})})
@@ -432,22 +466,25 @@ def write_report(report, chunks):
         "",
         "Generated by `scripts/prepare_dataset.py`. Do not edit by hand; rerun the script instead.",
         "",
-        f"**Totals:** {len(report)} documents, {sum(r['pages'] for r in report)} pages, {len(chunks)} chunks.",
+        f"**Totals:** {len(report)} documents, {sum(r['pages'] for r in report)} pages, {len(chunks)} chunks "
+        f"({sum(c['extraction'] == 'ocr' for c in chunks)} of them read from images).",
         "",
         "## Documents",
         "",
-        "| File | Original name | Pages | Words | Academic year | Semesters | Chunks | Words per chunk (min/avg/max) | Image-only pages | Status |",
-        "|---|---|---|---|---|---|---|---|---|---|",
+        "| File | Original name | Pages | Words | Academic year | Semesters | Chunks | Words per chunk (min/avg/max) | Pages read from images (OCR) | Image-only pages skipped | Status |",
+        "|---|---|---|---|---|---|---|---|---|---|---|",
     ]
     for r in report:
         low = ", ".join(map(str, r["low_pages"])) or "none"
+        ocr = ", ".join(map(str, r["ocr_pages"])) or "none"
         sems = ", ".join(map(str, r["semesters"])) or "-"
         lines.append(f"| {r['doc']} | {r['original']} | {r['pages']} | {r['words']} | {r['academic_year'] or '-'} | "
-                     f"{sems} | {r['chunks']} | {r['min']}/{r['avg']}/{r['max']} | {low} | {r['status']} |")
+                     f"{sems} | {r['chunks']} | {r['min']}/{r['avg']}/{r['max']} | {ocr} | {low} | {r['status']} |")
     lines += [
         "",
-        "Image-only pages have no extractable text (covers, scanned calendars, photos). They are skipped; "
-        "their page numbers are kept unchanged for the remaining pages.",
+        "Pages read from images: their text comes from `scripts/ocr_images.py` (the images listed under \"keep\" in "
+        "`dataset/images.json`); those chunks have `\"extraction\": \"ocr\"`. Image-only pages skipped: covers, photos, "
+        "logos, posters and blank pages (see \"skip\" in `dataset/images.json`). Page numbers are never changed.",
         "",
         "## Length checks",
         "",
