@@ -14,7 +14,7 @@ CHUNK_OVERLAP = 30      # words shared by neighbouring chunks
 MIN_CHUNK_WORDS = 5     # drop fragments shorter than this
 
 # --- Retrieval & answering --------------------------------------------------
-TOP_K = 3               # chunks given to Gemma per question
+TOP_K = 5               # chunks given to Gemma per question
 TEMPERATURE = 0.2       # low -> consistent, close to the document
 RELEVANCE_THRESHOLD = 0.30  # decline if the best chunk scores below this
                             # (cosine on normalized embeddings, 1.0 = identical)
