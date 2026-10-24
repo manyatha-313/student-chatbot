@@ -1,0 +1,9 @@
+# Same set the HackDay starter kit installs, pinned the same way, plus:
+#   numpy        - used directly in the retrieval step
+#   python-dotenv - loads GOOGLE_API_KEY from .env (replaces Colab Secrets off-Colab)
+pypdf
+sentence-transformers
+gradio>=6,<7
+google-genai
+numpy
+python-dotenv
