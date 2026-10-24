@@ -1,40 +1,247 @@
 {
   "_about": "Every image found in the PDFs (image-only pages, and embedded images covering 8% or more of a page), and whether its text is used. Only images that carry college information are kept; photos of people or buildings, logos, covers and blank pages are skipped. 'k' is the image's position on the page as found by scripts/ocr_images.py.",
   "keep": [
-    {"file": "syllabus/BE/BE_CSE_Year2_Syllabus.pdf", "page": 2, "k": 0, "what": "SSAHE notification approving the 2nd year CSE curriculum"},
-    {"file": "syllabus/BE/BE_CSE_Year3_Syllabus.pdf", "page": 2, "k": 0, "what": "SSAHE notification approving the 3rd year CSE curriculum"},
-    {"file": "syllabus/BE/BE_CSE_Year4_Syllabus.pdf", "page": 2, "k": 0, "what": "SSAHE notification approving the 4th year CSE curriculum"},
-    {"file": "syllabus/BE/BE_ECE_Year2_Syllabus.pdf", "page": 2, "k": 0, "what": "SSAHE notification approving the 2nd year ECE curriculum"},
-    {"file": "syllabus/BE/BE_ECE_Year3_Syllabus.pdf", "page": 2, "k": 0, "what": "SSAHE notification approving the 3rd year ECE curriculum"},
-    {"file": "syllabus/BE/BE_ECE_Year4_Syllabus.pdf", "page": 2, "k": 0, "what": "SSAHE notification approving the 4th year ECE curriculum"},
-    {"file": "syllabus/BE/BE_CV_Year2_Syllabus.pdf", "page": 2, "k": 0, "what": "SSAHE notification approving the 2nd year Civil curriculum"},
-    {"file": "syllabus/BE/BE_CV_Year3_Syllabus.pdf", "page": 2, "k": 0, "what": "SSAHE notification approving the 3rd year Civil curriculum"},
-    {"file": "syllabus/BE/BE_CV_Year4_Syllabus.pdf", "page": 2, "k": 0, "what": "SSAHE notification approving the 4th year Civil curriculum"},
-    {"file": "syllabus/BE/BE_ME_Year2_Syllabus.pdf", "page": 4, "k": 0, "what": "Scheme of teaching and examination, 3rd semester (table)"},
-    {"file": "syllabus/BE/BE_ME_Year2_Syllabus.pdf", "page": 39, "k": 0, "what": "Scheme of teaching and examination, 4th semester (table)"},
-    {"file": "syllabus/BE/BE_CSE-CY_Year4_Syllabus.pdf", "page": 75, "k": 0, "what": "SSAHE notification: internship guidelines for the NEP 160-credit batch"}
+    {
+      "file": "syllabus/BE/BE_CSE_Year2_Syllabus.pdf",
+      "page": 2,
+      "k": 0,
+      "what": "SSAHE notification approving the 2nd year CSE curriculum"
+    },
+    {
+      "file": "syllabus/BE/BE_CSE_Year3_Syllabus.pdf",
+      "page": 2,
+      "k": 0,
+      "what": "SSAHE notification approving the 3rd year CSE curriculum"
+    },
+    {
+      "file": "syllabus/BE/BE_CSE_Year4_Syllabus.pdf",
+      "page": 2,
+      "k": 0,
+      "what": "SSAHE notification approving the 4th year CSE curriculum"
+    },
+    {
+      "file": "syllabus/BE/BE_ECE_Year2_Syllabus.pdf",
+      "page": 2,
+      "k": 0,
+      "what": "SSAHE notification approving the 2nd year ECE curriculum"
+    },
+    {
+      "file": "syllabus/BE/BE_ECE_Year3_Syllabus.pdf",
+      "page": 2,
+      "k": 0,
+      "what": "SSAHE notification approving the 3rd year ECE curriculum"
+    },
+    {
+      "file": "syllabus/BE/BE_ECE_Year4_Syllabus.pdf",
+      "page": 2,
+      "k": 0,
+      "what": "SSAHE notification approving the 4th year ECE curriculum"
+    },
+    {
+      "file": "syllabus/BE/BE_CV_Year2_Syllabus.pdf",
+      "page": 2,
+      "k": 0,
+      "what": "SSAHE notification approving the 2nd year Civil curriculum"
+    },
+    {
+      "file": "syllabus/BE/BE_CV_Year3_Syllabus.pdf",
+      "page": 2,
+      "k": 0,
+      "what": "SSAHE notification approving the 3rd year Civil curriculum"
+    },
+    {
+      "file": "syllabus/BE/BE_CV_Year4_Syllabus.pdf",
+      "page": 2,
+      "k": 0,
+      "what": "SSAHE notification approving the 4th year Civil curriculum"
+    },
+    {
+      "file": "syllabus/BE/BE_ME_Year2_Syllabus.pdf",
+      "page": 4,
+      "k": 0,
+      "what": "Scheme of teaching and examination, 3rd semester (table)"
+    },
+    {
+      "file": "syllabus/BE/BE_ME_Year2_Syllabus.pdf",
+      "page": 39,
+      "k": 0,
+      "what": "Scheme of teaching and examination, 4th semester (table)"
+    },
+    {
+      "file": "syllabus/BE/BE_CSE-CY_Year4_Syllabus.pdf",
+      "page": 75,
+      "k": 0,
+      "what": "SSAHE notification: internship guidelines for the NEP 160-credit batch"
+    },
+    {
+      "file": "other/upGrad_SoT_Brochure.pdf",
+      "page": 14,
+      "k": 0,
+      "what": "upGrad brochure: 7-semester startup journey (timeline)"
+    },
+    {
+      "file": "other/upGrad_SoT_Brochure.pdf",
+      "page": 15,
+      "k": 0,
+      "what": "upGrad brochure: 7-semester research journey (timeline)"
+    }
   ],
   "skip": [
-    {"file": "syllabus/BE/BE_CSE_Year2_Syllabus.pdf", "page": 1, "why": "Preamble to the Constitution poster (national, not college information)"},
-    {"file": "syllabus/BE/BE_CSE_Year3_Syllabus.pdf", "page": 1, "why": "Preamble to the Constitution poster"},
-    {"file": "syllabus/BE/BE_CSE_Year4_Syllabus.pdf", "page": 1, "why": "Preamble to the Constitution poster"},
-    {"file": "syllabus/BE/BE_ECE_Year2_Syllabus.pdf", "page": 1, "why": "Preamble to the Constitution poster"},
-    {"file": "syllabus/BE/BE_ECE_Year3_Syllabus.pdf", "page": 1, "why": "Preamble to the Constitution poster"},
-    {"file": "syllabus/BE/BE_ECE_Year4_Syllabus.pdf", "page": 1, "why": "Preamble to the Constitution poster"},
-    {"file": "syllabus/BE/BE_CV_Year2_Syllabus.pdf", "page": 1, "why": "Preamble to the Constitution poster"},
-    {"file": "syllabus/BE/BE_CV_Year3_Syllabus.pdf", "page": 1, "why": "Preamble to the Constitution poster"},
-    {"file": "syllabus/BE/BE_CV_Year4_Syllabus.pdf", "page": 1, "why": "Preamble to the Constitution poster"},
-    {"file": "syllabus/BE/BE_ECE_Year4_Syllabus.pdf", "page": 48, "why": "Blank page"},
-    {"file": "syllabus/BE/BE_ME_Year2_Syllabus.pdf", "page": 1, "why": "Cover page; its text is already in the PDF text"},
-    {"file": "handbook/SSIT_Handbook_2025-26.pdf", "page": 1, "why": "Background image and logos behind the cover text"},
-    {"file": "handbook/SSIT_Handbook_2025-26.pdf", "page": 2, "why": "Background image behind the text"},
-    {"file": "handbook/SSIT_Handbook_2025-26.pdf", "page": 5, "why": "Portrait of the founder (person)"},
-    {"file": "handbook/SSIT_Handbook_2025-26.pdf", "page": 6, "why": "Portrait of the founder chancellor (person)"},
-    {"file": "handbook/SSIT_Handbook_2025-26.pdf", "page": 67, "why": "Plain 2025 month calendar with no events; the holidays are in the text on pages 64-65"},
-    {"file": "handbook/SSIT_Handbook_2025-26.pdf", "page": 68, "why": "Plain 2026 month calendar with no events; the holidays are in the text on pages 64-65"}
+    {
+      "file": "syllabus/BE/BE_CSE_Year2_Syllabus.pdf",
+      "page": 1,
+      "why": "Preamble to the Constitution poster (national, not college information)"
+    },
+    {
+      "file": "syllabus/BE/BE_CSE_Year3_Syllabus.pdf",
+      "page": 1,
+      "why": "Preamble to the Constitution poster"
+    },
+    {
+      "file": "syllabus/BE/BE_CSE_Year4_Syllabus.pdf",
+      "page": 1,
+      "why": "Preamble to the Constitution poster"
+    },
+    {
+      "file": "syllabus/BE/BE_ECE_Year2_Syllabus.pdf",
+      "page": 1,
+      "why": "Preamble to the Constitution poster"
+    },
+    {
+      "file": "syllabus/BE/BE_ECE_Year3_Syllabus.pdf",
+      "page": 1,
+      "why": "Preamble to the Constitution poster"
+    },
+    {
+      "file": "syllabus/BE/BE_ECE_Year4_Syllabus.pdf",
+      "page": 1,
+      "why": "Preamble to the Constitution poster"
+    },
+    {
+      "file": "syllabus/BE/BE_CV_Year2_Syllabus.pdf",
+      "page": 1,
+      "why": "Preamble to the Constitution poster"
+    },
+    {
+      "file": "syllabus/BE/BE_CV_Year3_Syllabus.pdf",
+      "page": 1,
+      "why": "Preamble to the Constitution poster"
+    },
+    {
+      "file": "syllabus/BE/BE_CV_Year4_Syllabus.pdf",
+      "page": 1,
+      "why": "Preamble to the Constitution poster"
+    },
+    {
+      "file": "syllabus/BE/BE_ECE_Year4_Syllabus.pdf",
+      "page": 48,
+      "why": "Blank page"
+    },
+    {
+      "file": "syllabus/BE/BE_ME_Year2_Syllabus.pdf",
+      "page": 1,
+      "why": "Cover page; its text is already in the PDF text"
+    },
+    {
+      "file": "handbook/SSIT_Handbook_2025-26.pdf",
+      "page": 1,
+      "why": "Background image and logos behind the cover text"
+    },
+    {
+      "file": "handbook/SSIT_Handbook_2025-26.pdf",
+      "page": 2,
+      "why": "Background image behind the text"
+    },
+    {
+      "file": "handbook/SSIT_Handbook_2025-26.pdf",
+      "page": 5,
+      "why": "Portrait of the founder (person)"
+    },
+    {
+      "file": "handbook/SSIT_Handbook_2025-26.pdf",
+      "page": 6,
+      "why": "Portrait of the founder chancellor (person)"
+    },
+    {
+      "file": "handbook/SSIT_Handbook_2025-26.pdf",
+      "page": 67,
+      "why": "Plain 2025 month calendar with no events; the holidays are in the text on pages 64-65"
+    },
+    {
+      "file": "handbook/SSIT_Handbook_2025-26.pdf",
+      "page": 68,
+      "why": "Plain 2026 month calendar with no events; the holidays are in the text on pages 64-65"
+    },
+    {
+      "file": "other/upGrad_SoT_Brochure.pdf",
+      "page": 1,
+      "why": "Brochure cover; its text is already in the PDF text"
+    },
+    {
+      "file": "other/upGrad_SoT_Brochure.pdf",
+      "page": 2,
+      "why": "Photo (no text)"
+    },
+    {
+      "file": "other/upGrad_SoT_Brochure.pdf",
+      "page": 5,
+      "why": "Background images; their text is already in the PDF text"
+    },
+    {
+      "file": "other/upGrad_SoT_Brochure.pdf",
+      "page": 6,
+      "why": "Background images; their text is already in the PDF text"
+    },
+    {
+      "file": "other/upGrad_SoT_Brochure.pdf",
+      "page": 7,
+      "why": "Infographic whose labels are already in the PDF text"
+    },
+    {
+      "file": "other/upGrad_SoT_Brochure.pdf",
+      "page": 10,
+      "why": "Background image; its text is already in the PDF text"
+    },
+    {
+      "file": "other/upGrad_SoT_Brochure.pdf",
+      "page": 11,
+      "why": "Background image; its text is already in the PDF text"
+    },
+    {
+      "file": "other/upGrad_SoT_Brochure.pdf",
+      "page": 13,
+      "why": "Company logos and a background image whose text is already in the PDF text"
+    },
+    {
+      "file": "other/upGrad_SoT_Brochure.pdf",
+      "page": 18,
+      "why": "Campus photos; the club descriptions are already in the PDF text"
+    },
+    {
+      "file": "other/upGrad_SoT_Brochure.pdf",
+      "page": 19,
+      "why": "Logos"
+    },
+    {
+      "file": "other/upGrad_SoT_Brochure.pdf",
+      "page": 20,
+      "why": "Company and partner university logos"
+    },
+    {
+      "file": "other/upGrad_SoT_Brochure.pdf",
+      "page": 23,
+      "why": "Photo (no text)"
+    },
+    {
+      "file": "other/upGrad_SoT_Brochure.pdf",
+      "page": 24,
+      "why": "Contact details; already in the PDF text"
+    }
   ],
   "excluded_documents": [
-    {"file": "Calendar-of-events-25-26.pdf", "why": "Calendar of events of Sri Siddhartha Dental College & Hospital (BDS/MDS), not SSIT. Scanned images only."},
-    {"file": "Principle_Brochure.pdf", "why": "Marketing brochure of upGrad School of Technology; not an SSIT document."}
+    {
+      "file": "Calendar-of-events-25-26.pdf",
+      "why": "Calendar of events of Sri Siddhartha Dental College & Hospital (BDS/MDS), not SSIT. Scanned images only."
+    }
   ]
 }

@@ -60,6 +60,16 @@
     {"file": "syllabus/BE/BE_CV_Year4_Syllabus.pdf",     "original_name": "CV YR 4.pdf", "type": "syllabus", "program": "B.E.", "branch": "CV",     "year": 4, "department": "Civil Engineering"},
     {"file": "syllabus/BE/BE_CSE-CY_Year4_Syllabus.pdf", "original_name": "CSE(Cy) Scheme & Syallabus 4th Year (2022 Scheme).pdf", "type": "syllabus", "program": "B.E.", "branch": "CSE-CY", "year": 4, "department": "Computer Science and Engineering (Cyber Security)"},
     {"file": "syllabus/BE/BE_CSE-DS_Year4_Syllabus.pdf", "original_name": "CSE(DS) Scheme and Syllabus 4th Year (NEP-160 Credits).pdf", "type": "syllabus", "program": "B.E.", "branch": "CSE-DS", "year": 4, "department": "Computer Science and Engineering (Data Science)"},
-    {"file": "syllabus/MTech/MTech_CADS_Year1_Syllabus.pdf", "original_name": "MTech_Year-I_CADS(CV).pdf", "type": "syllabus", "program": "M.Tech.", "branch": "CADS", "year": 1, "department": "Civil Engineering"}
+    {"file": "syllabus/MTech/MTech_CADS_Year1_Syllabus.pdf", "original_name": "MTech_Year-I_CADS(CV).pdf", "type": "syllabus", "program": "M.Tech.", "branch": "CADS", "year": 1, "department": "Civil Engineering"},
+    {
+      "file": "other/upGrad_SoT_Brochure.pdf",
+      "original_name": "Principle_Brochure.pdf",
+      "type": "brochure",
+      "title": "upGrad School of Technology Brochure (not an SSIT document)",
+      "publisher": "upGrad School of Technology",
+      "default_section": "upGrad School of Technology brochure",
+      "pages_stand_alone": true,
+      "contact": "upGrad School of Technology admissions (admissions@upgradsot.com, sot.upgrad.com)"
+    }
   ]
 }
