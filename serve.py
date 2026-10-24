@@ -59,4 +59,7 @@ def home():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    # 127.0.0.1 so the address uvicorn prints is the one that works in a browser
+    # (0.0.0.0 is a bind address, not browsable). Use "0.0.0.0" to reach it from another device.
+    print("\n  Open the assistant at:  http://localhost:8000\n")
+    uvicorn.run(app, host="127.0.0.1", port=8000)
