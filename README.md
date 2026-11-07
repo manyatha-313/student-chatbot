@@ -2,7 +2,7 @@
 
 A Retrieval-Augmented Generation (RAG) assistant that answers students' questions
 about college regulations using **only** the official documents, with source
-citations, and declines questions the documents do not cover
+citations, and declines questions the documents do not cover.
 
 This is **Theme 2A** of the HackDay. Full brief: [`ps-theme2.md`](ps-theme2.md).
 
